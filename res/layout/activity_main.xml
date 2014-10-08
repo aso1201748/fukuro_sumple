@@ -9,8 +9,28 @@
     tools:context="com.android.fukuro.MainActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:text="カメラ起動" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button1"
+        android:layout_marginLeft="36dp"
+        android:layout_toRightOf="@+id/button1"
+        android:text="フォルダ作成" />
 
 </RelativeLayout>
