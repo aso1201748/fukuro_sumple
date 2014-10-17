@@ -23,7 +23,8 @@ public class MkdirActivity extends Activity {
 
 				FileOutputStream fo;
 
-				File newfile = new File("/data/data/com.android.fukuro/maketest");
+				File newfile = new File("/data/data/com.android.fukuro/Item");
+				File newfile2 = new File("/data/data/com.android.fukuro/Thambnail");
 
 			    if (newfile.mkdir()){
 			      //System.out.println("ディレクトリの作成に成功しました");
@@ -33,6 +34,15 @@ public class MkdirActivity extends Activity {
 			      //System.out.println("ディレクトリの作成に失敗しました");
 			      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
 			    }
+
+			    if (newfile2.mkdir()){
+				      //System.out.println("ディレクトリの作成に成功しました");
+				      Log.d("ファイル作成","ディレクトリの作成に成功しました");
+
+				    }else{
+				      //System.out.println("ディレクトリの作成に失敗しました");
+				      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
+				    }
 
 			    try{
 			    File f = new File("/data/data/com.android.fukuro/maketest/test2.txt");

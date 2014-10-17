@@ -1,10 +1,18 @@
 package com.android.fukuro;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,10 +20,15 @@ import android.widget.ImageView;
 
 public class CameraActivity extends Activity {
 
+	private DBHelper dbHelper = new DBHelper(this);
+
+	public static SQLiteDatabase db;
+
 		static final int REQUEST_CAPTURE_IMAGE = 100;
 
 		Button button1;
 		ImageView imageView1;
+		File picFile;
 
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +36,36 @@ public class CameraActivity extends Activity {
 			setContentView(R.layout.camera);
 			findViews();
 			setListeners();
+
+			db = dbHelper.getWritableDatabase();
+
+			File newfile = new File("/data/data/com.android.fukuro/Item");
+			File newfile2 = new File("/data/data/com.android.fukuro/Thambnail");
+
+		    if (newfile.mkdir()){
+		      //System.out.println("ディレクトリの作成に成功しました");
+		      Log.d("ファイル作成","ディレクトリの作成に成功しました");
+
+		    }else{
+		      //System.out.println("ディレクトリの作成に失敗しました");
+		      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
+		    }
+
+		    if (newfile2.mkdir()){
+			      //System.out.println("ディレクトリの作成に成功しました");
+			      Log.d("ファイル作成","ディレクトリの作成に成功しました");
+
+			   }else{
+			      //System.out.println("ディレクトリの作成に失敗しました");
+			      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
+			   }
+
+		}
+
+		@Override
+		public void onDestroy(){
+			super.onDestroy();
+			dbHelper.close();
 		}
 
 		protected void findViews(){
@@ -34,8 +77,18 @@ public class CameraActivity extends Activity {
 			button1.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
+					Log.i("check","調べています");
+					picFile = new File(
+							"/data/data/com.android.fukuro/Item/"+System.currentTimeMillis()+".jpg");
+					Log.i("check","fileok?");
 					Intent intent = new Intent(
 						MediaStore.ACTION_IMAGE_CAPTURE);
+
+					intent.putExtra(
+							MediaStore.EXTRA_OUTPUT,
+							Uri.fromFile(picFile));
+					Log.i("check","putExtraok?");
+
 					startActivityForResult(
 						intent,
 						REQUEST_CAPTURE_IMAGE);
@@ -50,9 +103,20 @@ public class CameraActivity extends Activity {
 			Intent data) {
 			if(REQUEST_CAPTURE_IMAGE == requestCode
 				&& resultCode == Activity.RESULT_OK ){
-				Bitmap capturedImage =
-					(Bitmap) data.getExtras().get("data");
-				imageView1.setImageBitmap(capturedImage);
+				try {
+					FileInputStream in = new FileInputStream(picFile);
+					BitmapFactory.Options options
+						= new BitmapFactory.Options();
+					options.inSampleSize = 10;
+					Bitmap capturedImage
+						= BitmapFactory.decodeStream(
+							in,
+							null,
+							options);
+					imageView1.setImageBitmap(capturedImage);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 

@@ -39,6 +39,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 				break;
 
+			case R.id.button3:
+
+				//インテントに、この画面と、遷移する別の画面を指定する
+				intent = new Intent(MainActivity.this, InfoEditActivity.class);
+
+				//インテントで指定した別の画面に遷移する
+				startActivity(intent);
+
+				break;
+
 		}
 	}
 
@@ -52,6 +62,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         Button btn2 = (Button)findViewById(R.id.button2);
         btn2.setOnClickListener(this);
+
+        Button btn3 = (Button)findViewById(R.id.button3);
+        btn3.setOnClickListener(this);
 
 	}
 

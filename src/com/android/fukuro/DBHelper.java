@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	private final static String DB_NAME = "fukuro.db";
 	private final static int DB_VERSION = 1;
-	
+
 	public DBHelper(Context context){
 		super(context, DB_NAME, null, DB_VERSION);
 	}
@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// データベース作成時の処理を記述する。
-		
+
 		// テーブル作成
 		// ユーザテーブル
 		String sql1 = "CREATE TABLE User ( " +
@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				"good NUMERIC, " +
 				"PRIMARY KEY(ranking_id), " +
 				"FOREIGN KEY(user_id)REFERENCES User(user_id))";
-		
+
 		//SQL文の実行
 		db.execSQL(sql1);
 		db.execSQL(sql2);
@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL(sql4);
 		db.execSQL(sql5);
 		db.execSQL(sql6);
-		
+
 		//データ挿入
 		// ユーザテーブ
 		db.execSQL("INSERT INTO User(user_id,user_name) VALUES('0000001','相沢')");
@@ -85,5 +85,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	}
+
+	public void writepict(SQLiteDatabase db, String name){
+		String picname = name;
+		String sql = "INSERT INTO Item VALUES('001'," + picname +",'7','sample')";
+		db.execSQL(sql);
 	}
 }
