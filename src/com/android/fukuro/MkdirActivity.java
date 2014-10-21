@@ -45,7 +45,7 @@ public class MkdirActivity extends Activity {
 				    }
 
 			    try{
-			    File f = new File("/data/data/com.android.fukuro/maketest/test2.txt");
+			    File f = new File("/data/data/com.android.fukuro/Item/test2.txt");
 		        File parent = f.getParentFile();
 		        if (parent != null && parent.canWrite()) { parent.mkdirs(); }
 		        fo = new FileOutputStream(f);

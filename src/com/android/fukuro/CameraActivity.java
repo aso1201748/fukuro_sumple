@@ -39,27 +39,6 @@ public class CameraActivity extends Activity {
 
 			db = dbHelper.getWritableDatabase();
 
-			File newfile = new File("/data/data/com.android.fukuro/Item");
-			File newfile2 = new File("/data/data/com.android.fukuro/Thambnail");
-
-		    if (newfile.mkdir()){
-		      //System.out.println("ディレクトリの作成に成功しました");
-		      Log.d("ファイル作成","ディレクトリの作成に成功しました");
-
-		    }else{
-		      //System.out.println("ディレクトリの作成に失敗しました");
-		      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
-		    }
-
-		    if (newfile2.mkdir()){
-			      //System.out.println("ディレクトリの作成に成功しました");
-			      Log.d("ファイル作成","ディレクトリの作成に成功しました");
-
-			   }else{
-			      //System.out.println("ディレクトリの作成に失敗しました");
-			      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
-			   }
-
 		}
 
 		@Override
@@ -79,7 +58,7 @@ public class CameraActivity extends Activity {
 				public void onClick(View v) {
 					Log.i("check","調べています");
 					picFile = new File(
-							"/data/data/com.android.fukuro/Item/"+System.currentTimeMillis()+".jpg");
+							"/storage/sdcard0/DCIM/Camera/Item",System.currentTimeMillis()+".png");
 					Log.i("check","fileok?");
 					Intent intent = new Intent(
 						MediaStore.ACTION_IMAGE_CAPTURE);
