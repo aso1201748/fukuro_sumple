@@ -1,16 +1,14 @@
 package com.android.fukuro;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -20,85 +18,114 @@ import android.widget.ImageView;
 
 public class CameraActivity extends Activity {
 
-	private DBHelper dbHelper = new DBHelper(this);
+	static final int REQUEST_CAPTURE_IMAGE = 100;
 
-	public static SQLiteDatabase db;
+	Button button1;
+	ImageView imageView1;
+	File picFile;
+	File lookFile = new File("/data/data/com.android.fukuro/Item");
 
-		static final int REQUEST_CAPTURE_IMAGE = 100;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.camera);
+		findViews();
+		setListeners();
 
-		Button button1;
-		ImageView imageView1;
-		File picFile;
+		FileOutputStream fo;
 
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.camera);
-			findViews();
-			setListeners();
+		File newfile = new File("/data/data/com.android.fukuro/Item");
+		File newfile2 = new File("/data/data/com.android.fukuro/Thambnail");
 
-			db = dbHelper.getWritableDatabase();
+	    if (newfile.mkdir()){
+	      //System.out.println("ディレクトリの作成に成功しました");
+	      Log.d("ファイル作成","ディレクトリの作成に成功しました");
 
-		}
+	    }else{
+	      //System.out.println("ディレクトリの作成に失敗しました");
+	      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
+	    }
 
-		@Override
-		public void onDestroy(){
-			super.onDestroy();
-			dbHelper.close();
-		}
+	    if (newfile2.mkdir()){
+		      //System.out.println("ディレクトリの作成に成功しました");
+		      Log.d("ファイル作成","ディレクトリの作成に成功しました");
 
-		protected void findViews(){
-			button1 = (Button)findViewById(R.id.button1);
-			imageView1 = (ImageView)findViewById(R.id.imageView1);
-		}
+		    }else{
+		      //System.out.println("ディレクトリの作成に失敗しました");
+		      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
+		    }
 
-		protected void setListeners(){
-			button1.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					Log.i("check","調べています");
-					picFile = new File(
-							"/storage/sdcard0/DCIM/Camera/Item",System.currentTimeMillis()+".png");
-					Log.i("check","fileok?");
-					Intent intent = new Intent(
-						MediaStore.ACTION_IMAGE_CAPTURE);
+	    File f = new File("/data/data/com.android.fukuro/Item/test3.txt");
+        	if(f.mkdirs()){
+    	        Log.e("text作成","text作成にseikouしました");
+        	}else{
 
-					intent.putExtra(
-							MediaStore.EXTRA_OUTPUT,
-							Uri.fromFile(picFile));
-					Log.i("check","putExtraok?");
+	        Log.e("text作成","text作成に失敗しました");
 
-					startActivityForResult(
-						intent,
-						REQUEST_CAPTURE_IMAGE);
-				}
-			});
-		}
+        	}
+}
 
-		@Override
-		protected void onActivityResult(
-			int requestCode,
-			int resultCode,
-			Intent data) {
-			if(REQUEST_CAPTURE_IMAGE == requestCode
-				&& resultCode == Activity.RESULT_OK ){
-				try {
-					FileInputStream in = new FileInputStream(picFile);
-					BitmapFactory.Options options
-						= new BitmapFactory.Options();
-					options.inSampleSize = 10;
-					Bitmap capturedImage
-						= BitmapFactory.decodeStream(
-							in,
-							null,
-							options);
-					imageView1.setImageBitmap(capturedImage);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
+	protected void findViews(){
+		button1 = (Button)findViewById(R.id.button1);
+		imageView1 = (ImageView)findViewById(R.id.imageView1);
+	}
+
+	protected String getPicFileName(){
+		Calendar c = Calendar.getInstance();
+		String s = c.get(Calendar.YEAR)
+			+ "_" + (c.get(Calendar.MONTH)+1)
+			+ "_" + c.get(Calendar.DAY_OF_MONTH)
+			+ "_" + c.get(Calendar.HOUR_OF_DAY)
+			+ "_" + c.get(Calendar.MINUTE)
+			+ "_" + c.get(Calendar.SECOND)
+			+ ".png";
+		return s;
+	}
+
+	protected void setListeners(){
+		button1.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				picFile = new File(
+					Environment.getExternalStorageDirectory() + "/Item",
+					getPicFileName());
+
+
+
+				Intent intent = new Intent(
+					MediaStore.ACTION_IMAGE_CAPTURE);
+
+
+				intent.putExtra(
+					MediaStore.EXTRA_OUTPUT,
+					Uri.fromFile(picFile));
+
+				startActivityForResult(
+					intent,
+					REQUEST_CAPTURE_IMAGE);
+	            Log.e("test",picFile.toString());
+				Log.e("test",getPicFileName());
+			}
+		});
+	}
+
+	@Override
+	protected void onActivityResult(
+		int requestCode,
+		int resultCode,
+		Intent data) {
+
+		if(REQUEST_CAPTURE_IMAGE == requestCode
+			&& resultCode == Activity.RESULT_OK ){
+            Log.e("test",picFile.toString());
+
+            Intent intent = new Intent(CameraActivity.this,InfoEditActivity.class);
+
+			startActivity(intent);
+
+
 		}
 	}
 
 }
-
 
