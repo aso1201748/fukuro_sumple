@@ -90,7 +90,9 @@ public class CameraActivity extends Activity {
 					Environment.getExternalStorageDirectory() + "/Item",
 					getPicFileName());
 
-
+				 Intent i = new Intent(getApplicationContext(),InfoEditActivity.class);
+				 i.putExtra("Fpath", picFile.toString());
+				 startActivity(i);
 
 				Intent intent = new Intent(
 					MediaStore.ACTION_IMAGE_CAPTURE);
@@ -117,12 +119,10 @@ public class CameraActivity extends Activity {
 
 		if(REQUEST_CAPTURE_IMAGE == requestCode
 			&& resultCode == Activity.RESULT_OK ){
-            Log.e("test",picFile.toString());
 
             Intent intent = new Intent(CameraActivity.this,InfoEditActivity.class);
 
 			startActivity(intent);
-
 
 		}
 	}

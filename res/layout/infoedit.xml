@@ -15,23 +15,39 @@
         android:gravity="left|center_vertical"
         android:text="登　録" />
 
-    <Button
-        android:id="@+id/button1"
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginRight="36dp"
-        android:layout_toLeftOf="@+id/button2"
-        android:gravity="left|center_vertical"
-        android:text="キャンセル" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:src="@drawable/ic_launcher" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/Spinner01"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+        android:layout_marginBottom="58dp" />
+
+    <Spinner
+        android:id="@+id/Spinner01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="90dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:gravity="left|center_vertical"
+        android:text="キャンセル" />
 
 </RelativeLayout>
