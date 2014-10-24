@@ -87,7 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	}
 
-	public void writepict(SQLiteDatabase db, String name){
+	public void InsertItem(SQLiteDatabase db, String name, Long category){
 		String picname = name;
 		String sql = "INSERT INTO Item VALUES('001'," + picname +",'7','sample')";
 		db.execSQL(sql);
