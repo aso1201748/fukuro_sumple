@@ -24,6 +24,7 @@ public class CameraActivity extends Activity {
 	ImageView imageView1;
 	File picFile;
 	File lookFile = new File("/data/data/com.android.fukuro/Item");
+	String picname = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,12 +87,15 @@ public class CameraActivity extends Activity {
 		button1.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+
+				picname = getPicFileName();
 				picFile = new File(
 					Environment.getExternalStorageDirectory() + "/Item",
-					getPicFileName());
+					picname);
 
 				 Intent i = new Intent(getApplicationContext(),InfoEditActivity.class);
 				 i.putExtra("Fpath", picFile.toString());
+				 i.putExtra("Fname", picname);
 				 startActivity(i);
 
 				Intent intent = new Intent(
@@ -107,6 +111,7 @@ public class CameraActivity extends Activity {
 					REQUEST_CAPTURE_IMAGE);
 	            Log.e("test",picFile.toString());
 				Log.e("test",getPicFileName());
+				Log.e("test",picname);
 			}
 		});
 	}

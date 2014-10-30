@@ -43,20 +43,11 @@
         <requestFocus />
     </EditText>
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp" />
-
     <Spinner
         android:id="@+id/Spinner01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/switch1"
-        android:layout_marginTop="21dp" />
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

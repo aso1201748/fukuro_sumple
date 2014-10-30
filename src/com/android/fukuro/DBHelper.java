@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				"PRIMARY KEY(category_id))";
 		// 画像テーブル
 		String sql3 = "CREATE TABLE Item ( " +
-				"item_id TEXT, " +
+				"item_id INTEGER, " +
 				"item TEXT NOT NULL, " +
 				"category_id TEXT NOT NULL, " +
 				"memo TEXT NOT NULL, " +
@@ -87,9 +87,13 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	}
 
-	public void InsertItem(SQLiteDatabase db, String name, Long category){
-		String picname = name;
-		String sql = "INSERT INTO Item VALUES('001'," + picname +",'7','sample')";
+	public void InsertItem(SQLiteDatabase db, String name, String category, String memo){
+		String picpath = name;
+		String categorynum = category;
+		String memovalue = memo;
+
+		String sql = "INSERT INTO Item(item, category_id, memo) VALUES(\"" + picpath + "\",\"" + categorynum + "\",\"" + memovalue +"\")";
 		db.execSQL(sql);
 	}
+
 }

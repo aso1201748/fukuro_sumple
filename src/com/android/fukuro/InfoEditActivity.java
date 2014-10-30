@@ -2,6 +2,7 @@ package com.android.fukuro;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,11 +11,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -24,7 +28,12 @@ public class InfoEditActivity extends Activity implements View.OnClickListener{
 
 	public static SQLiteDatabase db;
 
-	long str;
+	Long str = null;
+	String memo = null;
+	String path = null;
+	String picname = null;
+	String category = null;
+	private ArrayList<String> ItemList = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +51,15 @@ public class InfoEditActivity extends Activity implements View.OnClickListener{
         Button btn2 = (Button)findViewById(R.id.button2);
         btn2.setOnClickListener(this);
 
+        EditText text1 = (EditText)findViewById(R.id.editText1);
+
 		Intent inte = getIntent();
-		String path = inte.getStringExtra("Fpath");
+		path = inte.getStringExtra("Fpath");
+		picname = inte.getStringExtra("Fname");
 		Log.d("check",path);
+		Log.d("check",picname);
+
+        text1.addTextChangedListener(watchHandler);
 
 		FileInputStream in = null;
 		try {
@@ -96,6 +111,30 @@ public class InfoEditActivity extends Activity implements View.OnClickListener{
 
 	}
 
+    private TextWatcher watchHandler = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            Log.d("textcheck1", "beforeTextChanged() s:" + s.toString() + " start:" + String.valueOf(start) + " count:" + String.valueOf(count) +
+                       " after:" + String.valueOf(after));
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Log.d("textcheck2", "onTextChanged() s:" + s.toString() + " start:" + String.valueOf(start) + " before:" + String.valueOf(before) +
+                       " count:" + String.valueOf(count));
+            memo = s.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            Log.d("textcheck3", "afterTextChanged()");
+        }
+    };
+
+
+
+
 	@Override
 	public void onClick(View v) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -104,7 +143,27 @@ public class InfoEditActivity extends Activity implements View.OnClickListener{
 
 		case R.id.button1:
 
+			category = str.toString();
 
+			Log.d("check",category);
+			Log.d("memo",memo);
+			Log.d("path",path);
+
+			this.dbHelper.InsertItem(db,picname,category,memo);
+
+
+
+			String sql2 = "select Item_id from Item order by Item_id";
+
+			Cursor c2 = db.rawQuery(sql2, null);
+
+			c2.moveToFirst();
+
+			for(int i = 0; i < c2.getCount(); i++){
+				ItemList.add(c2.getString(0));
+				Log.d("test", "id=" + ItemList);
+				c2.moveToNext();
+			}
 
 			break;
 
