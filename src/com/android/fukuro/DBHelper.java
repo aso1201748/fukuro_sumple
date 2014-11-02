@@ -1,8 +1,12 @@
 package com.android.fukuro;
 
+import java.util.ArrayList;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 	private final static String DB_NAME = "fukuro.db";
@@ -29,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				"PRIMARY KEY(category_id))";
 		// 画像テーブル
 		String sql3 = "CREATE TABLE Item ( " +
-				"item_id INTEGER, " +
+				"item_id TEXT, " +
 				"item TEXT NOT NULL, " +
 				"category_id TEXT NOT NULL, " +
 				"memo TEXT NOT NULL, " +
@@ -91,8 +95,38 @@ public class DBHelper extends SQLiteOpenHelper {
 		String picpath = name;
 		String categorynum = category;
 		String memovalue = memo;
+		String ID = "0001";
+		ArrayList<String> ItemList = new ArrayList<String>();
 
-		String sql = "INSERT INTO Item(item, category_id, memo) VALUES(\"" + picpath + "\",\"" + categorynum + "\",\"" + memovalue +"\")";
+		String sql2 = "select Item_id from Item order by Item_id";
+
+		Cursor c2 = db.rawQuery(sql2, null);
+
+		c2.moveToFirst();
+
+		for(int i = 0; i < c2.getCount(); i++){
+			ItemList.add(c2.getString(0));
+			c2.moveToNext();
+		}
+
+		int j = 0;
+
+		while(j < ItemList.size()){
+
+			ID = String.format("%04d", j + 1);
+
+			if(ID != ItemList.get(j)){
+				Log.d("checkif1",ID);
+				Log.d("checkif2",ItemList.get(j));
+				break;
+			}
+			Log.d("checkelse",ID);
+			j++;
+			ID = String.format("%04d", j + 1);
+		}
+
+		Log.d("checkinsertbe",ID);
+		String sql = "INSERT INTO Item(item_id,item, category_id, memo) VALUES(\""+ ID +"\",\"" + picpath + "\",\"" + categorynum + "\",\"" + memovalue +"\")";
 		db.execSQL(sql);
 	}
 
