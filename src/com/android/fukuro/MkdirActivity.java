@@ -1,15 +1,17 @@
 package com.android.fukuro;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
-public class MkdirActivity extends Activity {
+public class MkdirActivity extends Activity implements View.OnClickListener{
 
+	private DBHelper dbHelper = new DBHelper(this);
+
+	public static SQLiteDatabase db;
 
 	  public static void main(String args[]){
 		  Log.i("テスト","02");
@@ -21,41 +23,21 @@ public class MkdirActivity extends Activity {
 			protected void onCreate(Bundle savedInstanceState) {
 				super.onCreate(savedInstanceState);
 
-				FileOutputStream fo;
-
-				File newfile = new File("/data/data/com.android.fukuro/Item");
-				File newfile2 = new File("/data/data/com.android.fukuro/Thambnail");
-
-			    if (newfile.mkdir()){
-			      //System.out.println("ディレクトリの作成に成功しました");
-			      Log.d("ファイル作成","ディレクトリの作成に成功しました");
-
-			    }else{
-			      //System.out.println("ディレクトリの作成に失敗しました");
-			      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
-			    }
-
-			    if (newfile2.mkdir()){
-				      //System.out.println("ディレクトリの作成に成功しました");
-				      Log.d("ファイル作成","ディレクトリの作成に成功しました");
-
-				    }else{
-				      //System.out.println("ディレクトリの作成に失敗しました");
-				      Log.d("ファイル作成","ディレクトリの作成に失敗しました");
-				    }
-
-			    try{
-			    File f = new File("/data/data/com.android.fukuro/Item/test2.txt");
-		        File parent = f.getParentFile();
-		        if (parent != null && parent.canWrite()) { parent.mkdirs(); }
-		        fo = new FileOutputStream(f);
-
-			    } catch (IOException e) {
-			        Log.e("text作成","text作成に失敗しました");
-			    }
-
 				setContentView(R.layout.mkdir);
 
+				db = dbHelper.getWritableDatabase();
+
+		        Button btn1 = (Button)findViewById(R.id.button1);
+		        btn1.setOnClickListener(this);
+
 	  }
+
+	@Override
+	public void onClick(View v) {
+		// TODO 自動生成されたメソッド・スタブ
+
+		this.dbHelper.InsertItem(db,"2014_12_20_15_30.png","category","memo");
+
+	}
 
 }
