@@ -115,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 			ID = String.format("%04d", j + 1);
 
-			if(ID != ItemList.get(j)){
+			if(!(ID.equals(ItemList.get(j)))){
 				Log.d("checkif1",ID);
 				Log.d("checkif2",ItemList.get(j));
 				break;
