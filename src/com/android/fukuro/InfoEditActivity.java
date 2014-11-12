@@ -78,7 +78,7 @@ public class InfoEditActivity extends Activity implements View.OnClickListener{
 				null,
 				options);
 
-		((ImageView)findViewById(R.id.imageView1)).setImageBitmap(capturedImage);
+		((ImageView)findViewById(R.id.imageview)).setImageBitmap(capturedImage);
 
 		Cursor c = db.query("Category", new String[] {"category_name"}, null, null, null, null, null);
 
