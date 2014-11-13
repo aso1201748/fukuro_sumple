@@ -1,7 +1,10 @@
 package com.android.fukuro;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -21,7 +24,7 @@ import android.widget.TextView;
 public class MkdirActivity extends Activity implements DownloadListTaskCallback{
 
 	ListView myListView;
-	String path = null;
+	URL url = null;
 	String result = null;
 	String basepath = "http://koyoshi.php.xdomain.jp/";
 	@Override
@@ -66,28 +69,38 @@ public class MkdirActivity extends Activity implements DownloadListTaskCallback{
 			    Log.d("json",jsonObject.getString("ranking_item"));
 			    String str = itemList.get(i);
 
-			    path = "item/" + str;
+			    HttpURLConnection connection = null;
 
-			    Log.d("path", path);
+			    try {
+					url = new URL("http://koyoshi.php.xdomain.jp/item/" + str);
+					connection = (HttpURLConnection) url.openConnection();
 
-				FileInputStream in = null;
-				try {
-					in = new FileInputStream(basepath + path);
-				} catch (FileNotFoundException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				}
+					Log.d("path", url.toString());
 
-				BitmapFactory.Options options
+					InputStream in = url.openStream();
+
+
+					BitmapFactory.Options options
 					= new BitmapFactory.Options();
-				options.inSampleSize = 10;
-				Bitmap capturedImage
+					options.inSampleSize = 10;
+					Bitmap capturedImage
 					= BitmapFactory.decodeStream(
 						in,
 						null,
 						options);
 
-				((ImageView)findViewById(R.id.imageview)).setImageBitmap(capturedImage);
+					((ImageView)findViewById(R.id.imageview)).setImageBitmap(capturedImage);
+
+				} catch (MalformedURLException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} finally{
+					connection.disconnect();
+				}
+
 
 			}
 			System.out.print(rootObject);
